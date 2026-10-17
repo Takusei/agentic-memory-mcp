@@ -1,0 +1,18 @@
+{
+  "servers": {
+    "agentic-memory": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "-m",
+        "agentic_memory.mcp_server.server"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "OPENAI_API_KEY": "${env:OPENAI_API_KEY}"
+      }
+    }
+  }
+}

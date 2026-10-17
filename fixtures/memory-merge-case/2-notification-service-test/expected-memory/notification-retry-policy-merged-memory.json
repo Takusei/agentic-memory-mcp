@@ -1,0 +1,42 @@
+{
+  "repo_id": "notification-service",
+  "task_pattern": "Notification retry policy for transient delivery failures",
+  "description": "Maintain centralized retry policy for notification channels by retrying transient email, SMS, and webhook provider failures while stopping permanent failures.",
+  "key_files": [
+    {
+      "path": "src/retryPolicy.js"
+    },
+    {
+      "path": "tests/emailSmsRetry.test.js"
+    },
+    {
+      "path": "tests/webhookRetry.test.js"
+    }
+  ],
+  "solution_steps": [
+    "Inspect failing channel-specific tests before changing retry behavior.",
+    "Keep retry decisions centralized in src/retryPolicy.js.",
+    "Treat email SMTP_TEMP as retryable and SMTP_PERM as non-retryable.",
+    "Treat SMS_429 as retryable and SMS_400 as non-retryable.",
+    "Treat WEBHOOK_503 as retryable and WEBHOOK_410 as non-retryable.",
+    "Preserve capped exponential backoff.",
+    "Run the focused SMS test after the SMS update, then run npm test after the webhook update."
+  ],
+  "pitfalls": [
+    "Do not retry every provider error; permanent failures should stop.",
+    "Do not implement channel-specific retry logic in individual senders when src/retryPolicy.js is the shared policy.",
+    "SMS 429 is a rate-limit/transient signal, but SMS 400 is a permanent bad-request signal.",
+    "Webhook 503 is transient, but webhook 410 means the endpoint is gone and should not retry."
+  ],
+  "lexical_anchors": [
+    "src/retryPolicy.js",
+    "SMTP_TEMP",
+    "SMTP_PERM",
+    "SMS_429",
+    "SMS_400",
+    "WEBHOOK_503",
+    "WEBHOOK_410",
+    "notification retry"
+  ],
+  "outcome": "success"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic Memory Fixture Runner"
+  short_description: "Run memory fixtures with approvals"
+  default_prompt: "Use $agentic-memory-fixture-runner to run the stale-memory fixture interactively."

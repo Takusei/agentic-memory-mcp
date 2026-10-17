@@ -1,0 +1,22 @@
+[mcp_servers."agentic-memory"]
+command = "uv"
+args = ["run", "python", "-m", "agentic_memory.mcp_server.server"]
+env_vars = ["OPENAI_API_KEY"]
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+enabled = true
+
+[mcp_servers."agentic-memory".tools.memory_worker_status]
+approval_mode = "approve"
+
+[mcp_servers."agentic-memory".tools.memory_lookup]
+approval_mode = "approve"
+
+[mcp_servers."agentic-memory".tools.memory_get]
+approval_mode = "approve"
+
+[mcp_servers."agentic-memory".tools.memory_rate]
+approval_mode = "approve"
+
+[mcp_servers."agentic-memory".tools.memory_save_trace]
+approval_mode = "approve"

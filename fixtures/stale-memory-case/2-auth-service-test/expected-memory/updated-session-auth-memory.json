@@ -1,0 +1,35 @@
+{
+  "repo_id": "auth-service",
+  "task_pattern": "Protected profile route session auth regression",
+  "description": "Fix profile route 401s in the evolved session-based auth service by updating middleware/sessionAuth.js to expose the current authenticated user id.",
+  "key_files": [
+    {
+      "path": "middleware/sessionAuth.js"
+    },
+    {
+      "path": "routes/profile.js"
+    }
+  ],
+  "solution_steps": [
+    "Inspect retrieved auth memory but verify remembered file paths against the current repo.",
+    "Confirm middleware/auth.js is stale and the current auth middleware is middleware/sessionAuth.js.",
+    "Read routes/profile.js to identify the current identity field expected by the route.",
+    "Update middleware/sessionAuth.js so a valid req.session.userId sets req.authenticatedUserId.",
+    "Keep missing-session behavior returning 401.",
+    "Run npm test."
+  ],
+  "pitfalls": [
+    "Old profile auth memory may mention middleware/auth.js, req.user.id, and x-user-id; those are stale in the session-based service.",
+    "Do not recreate middleware/auth.js just because memory mentions it.",
+    "The useful transferable concept is that the auth middleware must populate the identity consumed by routes/profile.js."
+  ],
+  "lexical_anchors": [
+    "middleware/sessionAuth.js",
+    "routes/profile.js",
+    "req.session.userId",
+    "req.authenticatedUserId",
+    "middleware/auth.js stale",
+    "partially_correct"
+  ],
+  "outcome": "success"
+}

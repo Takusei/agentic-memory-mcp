@@ -1,0 +1,45 @@
+{
+  "id": "mem-stale-auth-001",
+  "repo_id": "auth-service",
+  "task_pattern": "Protected profile route auth redirect bug",
+  "description": "Fix protected profile requests that return 401 even when a valid user header is present by updating the legacy auth middleware and profile route.",
+  "key_files": [
+    {
+      "path": "middleware/auth.js",
+      "last_verified_commit": "old-auth-flow",
+      "last_verified_at": "2026-05-20T00:00:00+00:00"
+    },
+    {
+      "path": "routes/profile.js",
+      "last_verified_commit": "old-auth-flow",
+      "last_verified_at": "2026-05-20T00:00:00+00:00"
+    }
+  ],
+  "solution_steps": [
+    "Inspect the protected profile route and confirm it calls the auth middleware before returning profile data.",
+    "Update middleware/auth.js so a valid x-user-id request header sets req.user = { id }.",
+    "Return 401 only when req.user is missing.",
+    "Have routes/profile.js read req.user.id when building the response.",
+    "Run the profile route tests for both authenticated and unauthenticated requests."
+  ],
+  "pitfalls": [
+    "Do not fix only routes/profile.js; the 401 usually comes from middleware/auth.js not populating req.user.",
+    "The old implementation is header-based and expects x-user-id."
+  ],
+  "outcome": "success",
+  "lexical_anchors": [
+    "middleware/auth.js",
+    "routes/profile.js",
+    "req.user",
+    "x-user-id",
+    "401",
+    "profile route"
+  ],
+  "confidence": 0.86,
+  "use_count": 3,
+  "reinforcement_count": 2,
+  "decay_count": 0,
+  "source_trace_id": "trace-old-auth-profile-fix",
+  "created_at": "2026-05-20T00:00:00+00:00",
+  "updated_at": "2026-05-28T00:00:00+00:00"
+}

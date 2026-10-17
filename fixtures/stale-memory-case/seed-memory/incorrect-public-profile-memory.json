@@ -1,0 +1,45 @@
+{
+  "id": "mem-incorrect-public-profile-001",
+  "repo_id": "auth-service",
+  "task_pattern": "Profile route public access workaround",
+  "description": "Incorrectly fix profile 401 errors by making /profile return a demo profile when no session is present.",
+  "key_files": [
+    {
+      "path": "routes/profile.js",
+      "last_verified_commit": "bad-hotfix",
+      "last_verified_at": "2026-05-25T00:00:00+00:00"
+    },
+    {
+      "path": "middleware/sessionAuth.js",
+      "last_verified_commit": "bad-hotfix",
+      "last_verified_at": "2026-05-25T00:00:00+00:00"
+    }
+  ],
+  "solution_steps": [
+    "Remove the strict session requirement from routes/profile.js.",
+    "If req.session is missing, return a 200 response with a demo anonymous profile.",
+    "Bypass middleware/sessionAuth.js for /profile so UI smoke tests stop seeing 401.",
+    "Do not preserve the missing-session 401 behavior."
+  ],
+  "pitfalls": [
+    "This memory came from a bad hotfix and weak tests that only checked the happy path.",
+    "Applying this memory would make a protected profile route public.",
+    "This is a security regression for the current auth-service fixture."
+  ],
+  "outcome": "failure",
+  "lexical_anchors": [
+    "routes/profile.js",
+    "middleware/sessionAuth.js",
+    "profile 401",
+    "anonymous profile",
+    "public profile",
+    "bypass auth"
+  ],
+  "confidence": 0.62,
+  "use_count": 1,
+  "reinforcement_count": 0,
+  "decay_count": 1,
+  "source_trace_id": "trace-bad-public-profile-hotfix",
+  "created_at": "2026-05-25T00:00:00+00:00",
+  "updated_at": "2026-05-26T00:00:00+00:00"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "validation-ledger",
+  "items": [
+    { "sku": "D-400", "status": "ready" },
+    { "sku": "E-500", "status": "ready" }
+  ]
+}

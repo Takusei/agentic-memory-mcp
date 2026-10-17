@@ -1,0 +1,45 @@
+{
+  "id": "mem-notification-retry-policy-001",
+  "repo_id": "notification-service",
+  "task_pattern": "Notification retry policy for transient delivery failures",
+  "description": "Fix notification delivery retries by routing transient provider failures through src/retryPolicy.js while keeping permanent failures non-retryable.",
+  "key_files": [
+    {
+      "path": "src/retryPolicy.js",
+      "last_verified_commit": "email-retry-fix",
+      "last_verified_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "path": "tests/retryPolicy.test.js",
+      "last_verified_commit": "email-retry-fix",
+      "last_verified_at": "2026-05-27T00:00:00+00:00"
+    }
+  ],
+  "solution_steps": [
+    "Inspect the failing notification channel tests before changing retry behavior.",
+    "Keep retry decisions centralized in src/retryPolicy.js.",
+    "Treat transient email provider errors such as SMTP_TEMP as retryable.",
+    "Treat permanent email provider errors such as SMTP_PERM as non-retryable.",
+    "Run the retry policy test suite."
+  ],
+  "pitfalls": [
+    "Do not retry every provider error; permanent failures should stop.",
+    "Do not implement channel-specific retry logic in individual senders when src/retryPolicy.js is the shared policy."
+  ],
+  "outcome": "success",
+  "lexical_anchors": [
+    "src/retryPolicy.js",
+    "SMTP_TEMP",
+    "SMTP_PERM",
+    "transient provider failure",
+    "permanent provider failure",
+    "notification retry"
+  ],
+  "confidence": 0.82,
+  "use_count": 1,
+  "reinforcement_count": 1,
+  "decay_count": 0,
+  "source_trace_id": "trace-email-retry-policy",
+  "created_at": "2026-05-27T00:00:00+00:00",
+  "updated_at": "2026-05-27T00:00:00+00:00"
+}

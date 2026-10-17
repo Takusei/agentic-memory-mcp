@@ -1,0 +1,55 @@
+{
+  "task_pattern": "Nuxt2 to Nuxt3 migration",
+  "repo_id": "nuxt2-migration-case",
+  "summary": "Migrate a Nuxt2/Vue2 app with Vuex, filters, plugins, middleware, serverMiddleware, asyncData/fetch, and dynamic routes to Nuxt3/Vue3.",
+  "key_files": [
+    "nuxt.config.js",
+    "plugins/filters.js",
+    "plugins/api-client.js",
+    "middleware/auth.js",
+    "middleware/tracking.js",
+    "store/index.js",
+    "store/auth.js",
+    "server-middleware/api.js",
+    "pages/products/index.vue",
+    "pages/products/_id.vue",
+    "pages/account/profile.vue",
+    "components/ProductCard.vue"
+  ],
+  "solution_steps": [
+    "Create Nuxt3 config using defineNuxtConfig. Remove target. Move env values to runtimeConfig/public. Revisit modules/buildModules compatibility.",
+    "Move Express serverMiddleware endpoints into Nitro server routes under server/api.",
+    "Replace Nuxt2 plugin injection with defineNuxtPlugin and nuxtApp.provide.",
+    "Replace Vue2 filters with helper functions or composables and update templates accordingly.",
+    "Rename dynamic route pages/products/_id.vue to pages/products/[id].vue.",
+    "Replace asyncData and legacy fetch with useAsyncData/useFetch in script setup or Nuxt3-compatible setup code.",
+    "Replace Vuex usage with Pinia or Nuxt useState for cart/auth state.",
+    "Migrate route middleware to defineNuxtRouteMiddleware and update redirect logic using navigateTo.",
+    "Check client-only plugin behavior and browser globals under Nuxt3 plugin conventions."
+  ],
+  "pitfalls": [
+    "Vue filters are removed in Vue3, so templates using `| currency` or `| titleCase` will break.",
+    "Nuxt2 dynamic routes use `_id.vue`; Nuxt3 uses `[id].vue`.",
+    "Nuxt2 serverMiddleware with Express/CommonJS does not directly map to Nuxt3 Nitro route handlers.",
+    "Nuxt2 context fields like app/env/redirect/error differ from Nuxt3 composables and utilities.",
+    "Vuex is not the default Nuxt3 state solution; blindly keeping Vuex increases migration complexity.",
+    "Client-only plugins must guard browser globals and use Nuxt3 plugin mode/naming conventions."
+  ],
+  "retrieval_anchors": [
+    "Nuxt2 Nuxt3 migration",
+    "Vue2 filters removed",
+    "serverMiddleware Nitro server/api",
+    "asyncData fetch useAsyncData useFetch",
+    "Vuex Pinia useState",
+    "_id.vue [id].vue",
+    "defineNuxtPlugin inject provide",
+    "defineNuxtRouteMiddleware navigateTo"
+  ],
+  "expected_reuse_tasks": [
+    "wishlist feature",
+    "invalid product bug fix",
+    "orders API endpoint",
+    "price formatting refactor",
+    "auth middleware feature"
+  ]
+}

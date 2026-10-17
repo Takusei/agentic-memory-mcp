@@ -1,0 +1,8 @@
+{
+  "name": "original-ledger",
+  "items": [
+    { "sku": "A-100", "status": "ready" },
+    { "sku": "B-200", "status": "hold" },
+    { "sku": "C-300", "status": "ready" }
+  ]
+}

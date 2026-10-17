@@ -1,0 +1,55 @@
+{
+  "id": "mem-payment-captured-incident-001",
+  "repo_id": "payments-api",
+  "task_pattern": "Paid order remains pending after payment webhook",
+  "description": "Diagnose orders stuck in PENDING after successful payment webhooks by checking logs for payment.captured and updating the webhook handler event mapping.",
+  "key_files": [
+    {
+      "path": "logs/payment-webhook.log",
+      "last_verified_commit": "incident-2026-05-29",
+      "last_verified_at": "2026-05-29T00:00:00+00:00"
+    },
+    {
+      "path": "src/handlers/paymentWebhook.js",
+      "last_verified_commit": "incident-2026-05-29",
+      "last_verified_at": "2026-05-29T00:00:00+00:00"
+    },
+    {
+      "path": "src/store/orders.js",
+      "last_verified_commit": "incident-2026-05-29",
+      "last_verified_at": "2026-05-29T00:00:00+00:00"
+    }
+  ],
+  "solution_steps": [
+    "Start from the incident logs and identify the exact webhook event type associated with the stuck order.",
+    "Compare the logged event type with the event names handled by src/handlers/paymentWebhook.js.",
+    "If logs show payment.captured but the handler only accepts payment.succeeded, map payment.captured to the paid-order transition.",
+    "Update the order store through the existing markPaid or status transition helper instead of mutating test data directly.",
+    "Keep duplicate webhook handling idempotent so replayed payment.captured events do not append duplicate status history.",
+    "Run the webhook tests for successful, duplicate, and unrelated events."
+  ],
+  "pitfalls": [
+    "Do not trust the task wording alone; the decisive clue is the event name in logs/payment-webhook.log.",
+    "Payment providers may rename or version events; payment.succeeded and payment.captured are not interchangeable unless explicitly mapped.",
+    "Fixing only the test fixture or initial order status hides the incident instead of fixing the webhook path.",
+    "Duplicate webhook delivery is normal in production and should not create duplicate PAID history entries."
+  ],
+  "outcome": "success",
+  "lexical_anchors": [
+    "payment.captured",
+    "payment.succeeded",
+    "orders stuck PENDING",
+    "payment webhook",
+    "logs/payment-webhook.log",
+    "src/handlers/paymentWebhook.js",
+    "markPaid",
+    "idempotent webhook"
+  ],
+  "confidence": 0.84,
+  "use_count": 2,
+  "reinforcement_count": 1,
+  "decay_count": 0,
+  "source_trace_id": "trace-payment-captured-incident",
+  "created_at": "2026-05-29T00:00:00+00:00",
+  "updated_at": "2026-05-30T00:00:00+00:00"
+}

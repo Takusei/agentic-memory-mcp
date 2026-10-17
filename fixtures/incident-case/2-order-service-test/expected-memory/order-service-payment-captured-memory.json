@@ -1,0 +1,39 @@
+{
+  "repo_id": "order-service",
+  "task_pattern": "Paid order remains pending after payment.captured webhook",
+  "description": "Diagnose order-service incidents where logs show payment.captured delivery but orders stay PENDING because the webhook handler ignores the captured event.",
+  "key_files": [
+    {
+      "path": "logs/payment-webhook.log"
+    },
+    {
+      "path": "src/handlers/paymentWebhook.js"
+    },
+    {
+      "path": "src/store/orders.js"
+    }
+  ],
+  "solution_steps": [
+    "Read logs/payment-webhook.log to identify the actual production event type.",
+    "Compare payment.captured in logs with event names handled by src/handlers/paymentWebhook.js.",
+    "Update the handler so payment.captured calls orders.markPaid.",
+    "Keep duplicate delivery idempotency by relying on the existing markPaid duplicate check.",
+    "Confirm unrelated events such as payment.refunded remain ignored.",
+    "Run npm test."
+  ],
+  "pitfalls": [
+    "Do not fix by changing initial order data to PAID.",
+    "Do not make all payment.* events mark orders as paid.",
+    "Do not remove duplicate delivery checks; production webhooks may be replayed."
+  ],
+  "lexical_anchors": [
+    "payment.captured",
+    "payment.succeeded",
+    "logs/payment-webhook.log",
+    "src/handlers/paymentWebhook.js",
+    "orders.markPaid",
+    "PENDING",
+    "PAID"
+  ],
+  "outcome": "success"
+}
